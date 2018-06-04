@@ -3,6 +3,7 @@ import os
 import random
 import hashlib
 
+print(os.environ)
 
 class Database:
     def __init__(self):
