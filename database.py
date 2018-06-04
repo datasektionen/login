@@ -3,11 +3,10 @@ import os
 import random
 import hashlib
 
-print(os.environ)
 
 class Database:
     def __init__(self):
-        self._connection = psycopg2.connect(os.environ['DATABASE_URL'])
+        self._connection = psycopg2.connect(os.getenv('DATABASE_URL'))
 
 
     def token_by_kthid(self, kthid):
