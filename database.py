@@ -8,6 +8,11 @@ class Database:
     def __init__(self):
         self._connection = psycopg2.connect(os.getenv('DATABASE_URL'))
 
+    def commit(self):
+        self._connection.commit()
+
+    def close(self):
+        self._connection.close()
 
     def token_by_kthid(self, kthid):
         cur = self._connection.cursor()
@@ -24,6 +29,7 @@ class Database:
         else:
             res = None
         cur.close()
+        self.commit()
         return res
 
     def kthid_by_token(self, token):
@@ -35,6 +41,7 @@ class Database:
         LIMIT 1
         '''
         res = cur.execute(query, token)
+        self.commit()
         cur.close()
         if not res:
             return None
@@ -53,6 +60,7 @@ class Database:
         '''
         cur.execute(query, api_key)
         res = cur.fetchone()
+        self.commit()
         cur.close()
         return not not res
 
@@ -69,6 +77,7 @@ class Database:
             new_token = hashlib.md5(str(random.random(0,100000000000)) + kthid).hexdigest()
             cur.execute(query, new_token, kthid)
 
+        self.commit()
         cur.close()
         return new_token
 
@@ -83,6 +92,7 @@ class Database:
             key_postfix = hashlib.md5(str(random.random(0,100000000000)) + prefix).hexdigest()
             api_key = prefix + key_postfix
             cur.execute(query, api_key)
+        self.commit()
         cur.close()
         return api_key
 
@@ -94,4 +104,5 @@ class Database:
         VALUES (%s, NOW())
         '''
         cur.execute(query, api_key)
+        self.commit()
         cur.close()
