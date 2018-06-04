@@ -45,8 +45,7 @@ class Database:
         cur.close()
         if not res:
             return None
-        else:
-            return res["kthid"]
+        return res["kthid"]
 
 
     def api_key_exists(self, api_key):
@@ -62,6 +61,7 @@ class Database:
         res = cur.fetchone()
         self.commit()
         cur.close()
+
         return not not res
 
 
