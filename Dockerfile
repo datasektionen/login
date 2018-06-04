@@ -1,7 +1,7 @@
 FROM python:3.6
 
 WORKDIR /login3
-COPY . /consignment_predictor/
+COPY . /login3/
 
 RUN pip install -r requirements.txt
 
