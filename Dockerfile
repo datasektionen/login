@@ -5,7 +5,7 @@ COPY . /login3/
 
 RUN pip install -r requirements.txt
 
-RUN python3 db_migrate
+RUN python3 db_migrate.py
 
 expose 5000
 ENV FLASK_APP=server.py
