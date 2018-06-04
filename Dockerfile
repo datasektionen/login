@@ -3,7 +3,7 @@ FROM python:3.6
 WORKDIR /login3
 COPY . /consignment_predictor/
 
-RUN pip install -r requrements.txt
+RUN pip install -r requirements.txt
 
 RUN python3 db_migrate
 
