@@ -9,7 +9,24 @@ class Database:
         self._connection = psycopg2.connect(os.environ['DATABASE_HOST'])
 
 
-    def ugid_by_token(self, token):
+    def token_by_kthid(self, kthid):
+        cur = self._connection.cursor()
+        query = '''
+        SELECT token
+        FROM tokens
+        WHERE kthid = %s
+        LIMIT 1
+        '''
+        cur.execute(query, kthid)
+        res = cur.fetchone()
+        if res:
+            res = res['token']
+        else:
+            res = None
+        cur.close()
+        return res
+
+    def kthid_by_token(self, token):
         cur  = self._connection.cursor()
         query = '''
         SELECT uid
@@ -38,6 +55,8 @@ class Database:
         res = cur.fetchone()
         cur.close()
         return not not res
+
+
 
     def new_token(self, kthid):
         cur = self._connection.cursor()

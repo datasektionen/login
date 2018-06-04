@@ -1,5 +1,6 @@
+import flask
 from flask import Flask, request, redirect, abort, url_for, session, jsonify
-from flask_cas import CAS, login, login_required
+from flask_cas import CAS
 from urllib.parse import urlencode
 
 from database import Database
@@ -8,7 +9,7 @@ from database import Database
 app = Flask(__name__)
 cas = CAS(app, '/cas')
 app.config['SERVER_NAME'] = 'localhost.datasektionen.se'
-app.config['SECRET_KEY'] = 'SOMETHING'
+app.config['SECRET_KEY'] = 'SOMETHINGSUPERDUP33RSECREET'
 
 app.config['CAS_SERVER'] = 'https://login.kth.se'
 app.config['CAS_LOGIN_ROUTE'] = '/p3/login'
@@ -18,13 +19,19 @@ app.config['CAS_AFTER_LOGIN'] = 'index'
 
 
 @app.route("/login")
-@login_required
 def login():
     callback_url = request.args.get('callback')
-    print(cas.attributes)
-    print(cas.username)
-
-    return "success"
+    if not callback_url:
+        abort(400)
+    if 'CAS_USERNAME' not in flask.session:
+        flask.session['CAS_AFTER_LOGIN_SESSION_URL'] = flask.request.path
+        return login()
+    kthid = cas.attributes['cas.username']
+    db = Database()
+    token = db.token_by_kthid(kthid)
+    if not token:
+        token = db.new_token(kthid)
+    redirect(callback_url + '/' + token)
 
 
 @app.route("/logout")
@@ -43,11 +50,11 @@ def verify(token):
 
     if token.endswith('.json'):
         token = token[:-5]
-    ugid = db.ugid_by_token(token)
-    if not ugid:
+    kthid = db.kthid_by_token(token)
+    if not kthid:
         abort(404)
     else:
-        return jsonify({ 'ugkthid' : ugid })
+        return jsonify({ 'ugkthid' : kthid })
 
 
 if __name__ == '__main__':
