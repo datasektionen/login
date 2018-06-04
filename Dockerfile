@@ -3,10 +3,10 @@ FROM python:3.6
 WORKDIR /login3
 COPY . /login3/
 
-ARG DATABASE_URL
+
 RUN pip install -r requirements.txt
 
-RUN python3 db_migrate.py
+
 
 expose 5000
 ENV FLASK_APP=server.py
