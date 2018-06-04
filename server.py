@@ -20,19 +20,21 @@ app.config['CAS_AFTER_LOGIN'] = 'index'
 
 @app.route("/login")
 def login():
-    callback_url = request.args.get('callback')
-    if not callback_url:
-        abort(400)
-    if 'CAS_USERNAME' not in flask.session:
-        flask.session['CAS_AFTER_LOGIN_SESSION_URL'] = flask.request.path
-        return login()
-    kthid = cas.attributes['cas.username']
-    db = Database()
-    token = db.token_by_kthid(kthid)
-    if not token:
-        token = db.new_token(kthid)
-    redirect(callback_url + '/' + token)
-
+    try:
+        callback_url = request.args.get('callback')
+        if not callback_url:
+            abort(400)
+        if 'CAS_USERNAME' not in flask.session:
+            flask.session['CAS_AFTER_LOGIN_SESSION_URL'] = flask.request.path
+            return login()
+        kthid = cas.attributes['cas.username']
+        db = Database()
+        token = db.token_by_kthid(kthid)
+        if not token:
+            token = db.new_token(kthid)
+            redirect(callback_url + '/' + token)
+    except Exception as e:
+        return str(e)
 
 @app.route("/logout")
 def logout():
