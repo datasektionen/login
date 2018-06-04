@@ -8,7 +8,7 @@ from database import Database
 
 app = Flask(__name__)
 cas = CAS(app, '/cas')
-app.config['SERVER_NAME'] = 'localhost.datasektionen.se'
+app.config['SERVER_NAME'] = 'login.datasektionen.se'
 app.config['SECRET_KEY'] = 'SOMETHINGSUPERDUP33RSECREET'
 
 app.config['CAS_SERVER'] = 'https://login.kth.se'
