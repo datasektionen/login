@@ -2,7 +2,7 @@ import psycopg2
 import os
 
 
-connection = psycopg2.connect(os.environ['DATABASE_HOST'])
+connection = psycopg2.connect(os.environ['DATABASE_URL'])
 cur = connection.cursor()
 
 

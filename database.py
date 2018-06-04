@@ -6,7 +6,7 @@ import hashlib
 
 class Database:
     def __init__(self):
-        self._connection = psycopg2.connect(os.environ['DATABASE_HOST'])
+        self._connection = psycopg2.connect(os.environ['DATABASE_URL'])
 
 
     def token_by_kthid(self, kthid):
