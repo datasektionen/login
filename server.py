@@ -28,8 +28,7 @@ def login():
             flask.session['CAS_AFTER_LOGIN_SESSION_URL'] = flask.request.path
             return redirect(flask.url_for('cas.login', _external=True))
 
-        return str(cas.username) + str(cas.attributes)
-        kthid = cas.attributes['cas.username']
+        kthid = cas.username
         db = Database()
         token = db.token_by_kthid(kthid)
         if not token:
