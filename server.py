@@ -8,7 +8,7 @@ from database import Database
 
 app = Flask(__name__)
 cas = CAS(app, '/cas')
-app.config['SERVER_NAME'] = 'login.datasektionen.se'
+app.config['SERVER_NAME'] = 'localhost.datasektionen.se' #'login.datasektionen.se'
 app.config['SECRET_KEY'] = 'SOMETHINGSUPERDUP33RSECREET'
 
 app.config['CAS_SERVER'] = 'https://login.kth.se'
@@ -20,22 +20,19 @@ app.config['CAS_AFTER_LOGIN'] = 'index'
 
 @app.route("/login")
 def login():
-    try:
-        callback_url = request.args.get('callback')
-        if not callback_url:
-            abort(400)
-        if 'CAS_USERNAME' not in flask.session:
-            flask.session['CAS_AFTER_LOGIN_SESSION_URL'] = flask.request.path
-            return redirect(flask.url_for('cas.login', _external=True))
+    callback_url = request.args.get('callback')
+    if not callback_url:
+        abort(400)
+    if 'CAS_USERNAME' not in flask.session:
+        flask.session['CAS_AFTER_LOGIN_SESSION_URL'] = flask.request.url
+        return redirect(flask.url_for('cas.login', _external=True))
+    kthid = cas.username
+    db = Database()
+    token = db.token_by_kthid(kthid)
+    if not token:
+        token = db.new_token(kthid)
+    return redirect(callback_url + '/' + token)
 
-        kthid = cas.username
-        db = Database()
-        token = db.token_by_kthid(kthid)
-        if not token:
-            token = db.new_token(kthid)
-            return redirect(callback_url + '/' + token)
-    except Exception as e:
-        return "Exception:" + str(e)
 
 @app.route("/logout")
 def logout():

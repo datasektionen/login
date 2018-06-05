@@ -4,6 +4,11 @@ import random
 import hashlib
 
 
+# Does this location suck? :D Clean up this mess if you want to.
+def gen_hash(salt):
+    data = str(random.randint(0,100000000000)) + str(salt)
+    return hashlib.md5(data.encode('utf-8')).hexdigest()
+
 class Database:
     def __init__(self):
         self._connection = psycopg2.connect(os.getenv('DATABASE_URL'))
@@ -25,7 +30,7 @@ class Database:
         cur.execute(query, (kthid,))
         res = cur.fetchone()
         if res:
-            res = res['token']
+            res = res[0]
         else:
             res = None
         cur.close()
@@ -65,7 +70,6 @@ class Database:
         return not not res
 
 
-
     def new_token(self, kthid):
         cur = self._connection.cursor()
 
@@ -73,8 +77,9 @@ class Database:
         INSERT INTO tokens (token, kthid, time_created)
         VALUES (%s, %s, NOW())
         '''
-        while cur.rowcount == 0:
-            new_token = hashlib.md5(str(random.random(0,100000000000)) + kthid).hexdigest()
+
+        while cur.rowcount <= 0:
+            new_token = gen_hash(kthid)
             cur.execute(query, (new_token, kthid))
 
         self.commit()
@@ -88,8 +93,8 @@ class Database:
         INSERT INTO api_keys (api_key, time_created)
         VALUES (%s, NOW())
         '''
-        while cur.rowcount == 0:
-            key_postfix = hashlib.md5(str(random.random(0,100000000000)) + prefix).hexdigest()
+        while cur.rowcount <= 0:
+            key_postfix = gen_hash(prefix)
             api_key = prefix + key_postfix
             cur.execute(query, (api_key,))
         self.commit()
