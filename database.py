@@ -123,6 +123,6 @@ class Database:
         INSERT INTO api_keys (api_key, time_created)
         VALUES (%s, NOW())
         '''
-        cur.execute(query, api_key)
+        cur.execute(query, (api_key,))
         self.commit()
         cur.close()
