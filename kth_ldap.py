@@ -14,10 +14,10 @@ def get_user_info(ugid):
         if conn.entries:
                 entry = conn.entries[0]
                 return {
-                        'first_name' : entry.givenName,
-                        'second_name': entry.sn,
-                        'user' : entry.ugUsername,
-                        'ugkthid' : entry.ugkthid
+                        'first_name' : entry.givenName.values[0],
+                        'second_name': entry.sn.values[0],
+                        'user' : entry.ugUsername.values[0],
+                        'ugkthid' : entry.ugkthid.values[0]
                 }
         return None
 
