@@ -8,7 +8,7 @@ import kth_ldap
 
 app = Flask(__name__)
 cas = CAS(app, '/cas')
-app.config['SERVER_NAME'] = 'localhost.datasektionen.se' #'login.datasektionen.se'
+#app.config['SERVER_NAME'] = 'login.datasektionen.se'
 app.config['SECRET_KEY'] = 'SOMETHINGSUPERDUP33RSECREET'
 
 app.config['CAS_SERVER'] = 'https://login.kth.se'
@@ -61,5 +61,5 @@ def verify(token):
     else:
         abort(404)
 
-if __name__ == '__main__':
-    app.run(host='localhost.datasektionen.se', port=80)
+# if __name__ == '__main__':
+#    app.run(host='localhost.datasektionen.se', port=80)
