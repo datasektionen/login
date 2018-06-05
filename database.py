@@ -22,7 +22,7 @@ class Database:
         WHERE kthid = %s
         LIMIT 1
         '''
-        cur.execute(query, kthid)
+        cur.execute(query, (kthid,))
         res = cur.fetchone()
         if res:
             res = res['token']
@@ -37,10 +37,10 @@ class Database:
         query = '''
         SELECT uid
         FROM tokens
-        WHERE token = %s AND to_timestamp(time_created) < NOW() - INTERVAL '30 days'
+        WHERE token = %s AND to_timestamp(time_created) < NOW() - INTERVAL '1 days'
         LIMIT 1
         '''
-        res = cur.execute(query, token)
+        res = cur.execute(query, (token,))
         self.commit()
         cur.close()
         if not res:
@@ -57,7 +57,7 @@ class Database:
         WHERE api_key = %s
         LIMIT 1
         '''
-        cur.execute(query, api_key)
+        cur.execute(query, (api_key,))
         res = cur.fetchone()
         self.commit()
         cur.close()
@@ -75,7 +75,7 @@ class Database:
         '''
         while cur.rowcount > 0:
             new_token = hashlib.md5(str(random.random(0,100000000000)) + kthid).hexdigest()
-            cur.execute(query, new_token, kthid)
+            cur.execute(query, (new_token, kthid))
 
         self.commit()
         cur.close()
@@ -91,7 +91,7 @@ class Database:
         while cur.rowcount > 0:
             key_postfix = hashlib.md5(str(random.random(0,100000000000)) + prefix).hexdigest()
             api_key = prefix + key_postfix
-            cur.execute(query, api_key)
+            cur.execute(query, (api_key,))
         self.commit()
         cur.close()
         return api_key
@@ -106,3 +106,4 @@ class Database:
         cur.execute(query, api_key)
         self.commit()
         cur.close()
+>
