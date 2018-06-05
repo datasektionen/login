@@ -31,7 +31,8 @@ def login():
     token = db.token_by_kthid(kthid)
     if not token:
         token = db.new_token(kthid)
-    return redirect(callback_url + '/' + token)
+
+    return redirect(callback_url + token)
 
 
 @app.route("/logout")
@@ -45,6 +46,7 @@ def verify(token):
         abort(400)
 
     db = Database()
+    db.insert_api_key(api_key)
     if not db.api_key_exists(api_key):
         abort(401)
 
