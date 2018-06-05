@@ -4,7 +4,7 @@ from flask_cas import CAS
 from urllib.parse import urlencode
 
 from database import Database
-
+import kth_ldap
 
 app = Flask(__name__)
 cas = CAS(app, '/cas')
@@ -40,7 +40,7 @@ def logout():
 
 @app.route("/verify/<string:token>")
 def verify(token):
-    api_key= request.args.get('api_key')
+    api_key = request.args.get('api_key')
     if not api_key:
         abort(400)
 
@@ -51,11 +51,15 @@ def verify(token):
     if token.endswith('.json'):
         token = token[:-5]
     kthid = db.kthid_by_token(token)
+
     if not kthid:
         abort(404)
-    else:
-        return jsonify({ 'ugkthid' : kthid })
 
+    user_info = kth_ldap.get_user_info(kthid)
+    if user_info:
+        return  jsonify(user_info)
+    else:
+        abort(404)
 
 if __name__ == '__main__':
     app.run(host='localhost.datasektionen.se', port=80)

@@ -19,6 +19,18 @@ class Database:
     def close(self):
         self._connection.close()
 
+    def update_time_created(self, token):
+        cur = self._connection.cursor()
+        query = '''
+        UPDATE tokens
+        SET time_created = NOW()
+        WHERE token = %s
+        '''
+        num_updated = cur.execute(query, (token,))
+        self.commit()
+        cur.close()
+        return num_updated
+
     def token_by_kthid(self, kthid):
         cur = self._connection.cursor()
         query = '''
@@ -30,6 +42,7 @@ class Database:
         cur.execute(query, (kthid,))
         res = cur.fetchone()
         if res:
+
             res = res[0]
         else:
             res = None
@@ -40,17 +53,19 @@ class Database:
     def kthid_by_token(self, token):
         cur  = self._connection.cursor()
         query = '''
-        SELECT uid
+        SELECT kthid
         FROM tokens
-        WHERE token = %s AND to_timestamp(time_created) < NOW() - INTERVAL '1 days'
+        WHERE token = %s AND time_created > NOW() - INTERVAL '1' day
         LIMIT 1
         '''
-        res = cur.execute(query, (token,))
-        self.commit()
+        cur.execute(query, (token,))
+        res = cur.fetchone()
+
         cur.close()
         if not res:
             return None
-        return res["kthid"]
+        self.update_time_created(token)
+        return res[0]
 
 
     def api_key_exists(self, api_key):
@@ -95,7 +110,7 @@ class Database:
         '''
         while cur.rowcount <= 0:
             key_postfix = gen_hash(prefix)
-            api_key = prefix + key_postfix
+            api_key = prefix + "-" + key_postfix
             cur.execute(query, (api_key,))
         self.commit()
         cur.close()
