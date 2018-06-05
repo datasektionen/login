@@ -1,3 +1,4 @@
 psycopg2==2.7.4
 flask==1.0.2
 Flask-CAS==1.0.0
+ldap3==2.5
