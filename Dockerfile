@@ -6,7 +6,7 @@ COPY . /login3/
 
 RUN pip install -r requirements.txt
 
-expose 5000 389
+expose 389:389
 
 ENV FLASK_APP=server.py
 RUN cd /login3
