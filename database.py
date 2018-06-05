@@ -123,6 +123,10 @@ class Database:
         INSERT INTO api_keys (api_key, time_created)
         VALUES (%s, NOW())
         '''
-        cur.execute(query, (api_key,))
+        try:
+            cur.execute(query, (api_key,))
+        except:
+            print
+            pass
         self.commit()
         cur.close()
