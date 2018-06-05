@@ -27,6 +27,7 @@ def login():
         if 'CAS_USERNAME' not in flask.session:
             flask.session['CAS_AFTER_LOGIN_SESSION_URL'] = flask.request.path
             return redirect(flask.url_for('cas.login', _external=True))
+
         kthid = cas.attributes['cas.username']
         db = Database()
         token = db.token_by_kthid(kthid)
@@ -34,7 +35,7 @@ def login():
             token = db.new_token(kthid)
             return redirect(callback_url + '/' + token)
     except Exception as e:
-        return str(e)
+        return "Exception:" + str(e)
 
 @app.route("/logout")
 def logout():
