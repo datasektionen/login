@@ -106,4 +106,3 @@ class Database:
         cur.execute(query, api_key)
         self.commit()
         cur.close()
->
