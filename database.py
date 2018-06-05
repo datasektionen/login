@@ -73,7 +73,7 @@ class Database:
         INSERT INTO tokens (token, kthid, time_created)
         VALUES (%s, %s, NOW())
         '''
-        while cur.rowcount > 0:
+        while cur.rowcount == 0:
             new_token = hashlib.md5(str(random.random(0,100000000000)) + kthid).hexdigest()
             cur.execute(query, (new_token, kthid))
 
@@ -88,7 +88,7 @@ class Database:
         INSERT INTO api_keys (api_key, time_created)
         VALUES (%s, NOW())
         '''
-        while cur.rowcount > 0:
+        while cur.rowcount == 0:
             key_postfix = hashlib.md5(str(random.random(0,100000000000)) + prefix).hexdigest()
             api_key = prefix + key_postfix
             cur.execute(query, (api_key,))
