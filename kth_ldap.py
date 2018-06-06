@@ -15,8 +15,9 @@ def get_user_info(ugid):
                 entry = conn.entries[0]
                 return {
                         'first_name' : entry.givenName.values[0],
-                        'second_name': entry.sn.values[0],
+                        'last_name': entry.sn.values[0],
                         'user' : entry.ugUsername.values[0],
+                        'emails': entry.mail.values[0],
                         'ugkthid' : entry.ugkthid.values[0]
                 }
         return None
