@@ -41,7 +41,7 @@ def logout():
 
 @app.route("/verify/<string:token>")
 def verify(token):
-    api_key = request.args.get('api_key')
+    api_key = request.values.get('api_key')
     if not api_key:
         abort(400)
 
