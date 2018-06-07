@@ -55,7 +55,7 @@ class Database:
         query = '''
         SELECT kthid
         FROM tokens
-        WHERE token = %s AND time_created > NOW() - INTERVAL '1' day
+        WHERE token = %s
         LIMIT 1
         '''
         cur.execute(query, (token,))
