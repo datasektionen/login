@@ -23,7 +23,7 @@ app.debug = True
 def login():
     callback_url = request.args.get('callback')
     if not callback_url:
-        abort(400)
+        return abort(400)
     if 'CAS_USERNAME' not in flask.session:
         flask.session['CAS_AFTER_LOGIN_SESSION_URL'] = flask.request.url
         return redirect(flask.url_for('cas.login', _external=True))
