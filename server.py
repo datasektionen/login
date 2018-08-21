@@ -16,6 +16,7 @@ app.config['CAS_LOGIN_ROUTE'] = '/p3/login'
 app.config['CAS_LOGOUT_ROUTE'] = '/p3/logout'
 app.config['CAS_VALIDATE_ROUTE'] = '/p3/serviceValidate'
 app.config['CAS_AFTER_LOGIN'] = 'index'
+app.debug = True
 
 
 @app.route("/login")
