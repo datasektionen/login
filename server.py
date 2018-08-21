@@ -46,7 +46,6 @@ def verify(token):
         abort(400)
 
     db = Database()
-    db.insert_api_key(api_key)
     if not db.api_key_exists(api_key):
         abort(401)
 
@@ -56,7 +55,7 @@ def verify(token):
 
     if not kthid:
         abort(404)
-
+    db.update_time_created(token)
     user_info = kth_ldap.get_user_info(kthid)
     if user_info:
         return  jsonify(user_info)

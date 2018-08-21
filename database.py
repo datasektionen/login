@@ -37,6 +37,7 @@ class Database:
         SELECT token
         FROM tokens
         WHERE kthid = %s
+        AND time_created > NOW() - '1' day
         LIMIT 1
         '''
         cur.execute(query, (kthid,))
@@ -56,6 +57,7 @@ class Database:
         SELECT kthid
         FROM tokens
         WHERE token = %s
+        AND time_created > NOW() - '1' day
         LIMIT 1
         '''
         cur.execute(query, (token,))
