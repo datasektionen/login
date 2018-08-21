@@ -37,13 +37,11 @@ class Database:
         SELECT token
         FROM tokens
         WHERE kthid = %s
-        AND time_created > NOW() - '1' day
         LIMIT 1
         '''
         cur.execute(query, (kthid,))
         res = cur.fetchone()
         if res:
-
             res = res[0]
         else:
             res = None
@@ -52,12 +50,11 @@ class Database:
         return res
 
     def kthid_by_token(self, token):
-        cur  = self._connection.cursor()
+        cur = self._connection.cursor()
         query = '''
         SELECT kthid
         FROM tokens
         WHERE token = %s
-        AND time_created > NOW() - '1' day
         LIMIT 1
         '''
         cur.execute(query, (token,))
