@@ -5,6 +5,7 @@ from urllib.parse import urlencode
 
 from database import Database
 import kth_ldap
+import pls_api
 
 app = Flask(__name__)
 cas = CAS(app, '/cas')
@@ -47,7 +48,7 @@ def verify(token):
         abort(400)
 
     db = Database()
-    if not db.api_key_exists(api_key):
+    if not (db.api_key_exists(api_key) or pls_api.verify(api_key)):
         abort(401)
 
     if token.endswith('.json'):
