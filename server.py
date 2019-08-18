@@ -19,6 +19,9 @@ app.config['CAS_VALIDATE_ROUTE'] = '/p3/serviceValidate'
 app.config['CAS_AFTER_LOGIN'] = 'index'
 app.debug = True
 
+@app.route("/hello")
+def hello():
+    return "Hello Login!"
 
 @app.route("/login")
 def login():
