@@ -6,11 +6,12 @@ from urllib.parse import urlencode
 from database import Database
 import kth_ldap
 import pls_api
+import os
 
 app = Flask(__name__)
 cas = CAS(app, '/cas')
 #app.config['SERVER_NAME'] = 'login.datasektionen.se'
-app.config['SECRET_KEY'] = 'SOMETHINGSUPERDUP33RSECREET'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'SOMETHINGSUPERDUP33RSECREET')
 
 app.config['CAS_SERVER'] = 'https://login.kth.se'
 app.config['CAS_LOGIN_ROUTE'] = '/p3/login'
@@ -67,5 +68,3 @@ def verify(token):
     else:
         abort(404)
 
-# if __name__ == '__main__':
-#    app.run(host='localhost.datasektionen.se', port=80)
