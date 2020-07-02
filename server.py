@@ -23,7 +23,7 @@ app.debug = True
 
 @app.route("/hello")
 def hello():
-    return "Hello Login!"
+    return "Hello Login!!!"
 
 def valid_callback(callback_url):
     if os.environ.get('DONT_VALIDATE_CALLBACK', '0') != '0':
