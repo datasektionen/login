@@ -1,0 +1,34 @@
+{
+    "entries": [
+        {
+            "dn": "ugKthid=u1xxxxx,ou=Addressbook,dc=kth,dc=se",
+            "raw": {
+                "ugKthid": "u1xxxxx",
+                "givenname": "Jultomten",
+                "sn": "Andersson",
+                "ugusername": "juland",
+                "mail": "juland@kth.se"
+            }
+        },
+        {
+            "dn": "ugKthid=u1yyyyy,ou=Addressbook,dc=kth,dc=se",
+            "raw": {
+                "ugKthid": "u1yyyyy",
+                "givenname": "Tandfen",
+                "sn": "Larsson",
+                "ugusername": "tanlar",
+                "mail": "tanlar@kth.se"
+            }
+        },
+        {
+            "dn": "ugKthid=u1zzzzz,ou=Addressbook,dc=kth,dc=se",
+            "raw": {
+                "ugKthid": "u1zzzzz",
+                "givenname": "Gopher",
+                "sn": "Gustavsson",
+                "ugusername": "gopgus",
+                "mail": "gopgus@kth.se"
+            }
+        }
+    ]
+}

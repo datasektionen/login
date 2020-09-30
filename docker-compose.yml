@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+      - "8001:8001" # This port is for the cas system.
+    environment:
+      DATABASE_URL: postgres://postgres:password@db:5432/
+      CAS_SERVER: http://localhost:8001/
+      CAS_LOGIN_ROUTE: /login
+      CAS_LOGOUT_ROUTE: /logout
+      CAS_VALIDATE_ROUTE: /serviceValidate
+      MOCK_LDAP: 1
+    command: ["./run.sh"]
+  db: # https://hub.docker.com/_/postgres
+    image: "postgres:latest"
+    environment:
+      POSTGRES_PASSWORD: password
+  cas:
+    build: ./mockcas
+    # network_mode: "service:web" is needed so that web can call cas
+    # using localhost.
+    network_mode: "service:web"
+    command: ["python3", "server.py", "--port", "8001", "rudolf", "data_dir"]

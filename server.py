@@ -10,13 +10,12 @@ import os
 
 app = Flask(__name__)
 cas = CAS(app, '/cas')
-#app.config['SERVER_NAME'] = 'login.datasektionen.se'
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'SOMETHINGSUPERDUP33RSECREET')
 
-app.config['CAS_SERVER'] = 'https://login.kth.se'
-app.config['CAS_LOGIN_ROUTE'] = '/p3/login'
-app.config['CAS_LOGOUT_ROUTE'] = '/p3/logout'
-app.config['CAS_VALIDATE_ROUTE'] = '/p3/serviceValidate'
+app.config['CAS_SERVER'] = os.environ.get('CAS_SERVER', 'https://login.kth.se')
+app.config['CAS_LOGIN_ROUTE'] = os.environ.get('CAS_LOGIN_ROUTE', '/p3/login')
+app.config['CAS_LOGOUT_ROUTE'] = os.environ.get('CAS_LOGOUT_ROUTE', '/p3/logout')
+app.config['CAS_VALIDATE_ROUTE'] = os.environ.get('CAS_VALIDATE_ROUTE', '/p3/serviceValidate')
 app.config['CAS_AFTER_LOGIN'] = 'index'
 app.debug = True
 
