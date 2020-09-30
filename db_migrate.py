@@ -7,9 +7,6 @@ print(os.getenv('DATABASE_URL'))
 connection = psycopg2.connect(os.getenv('DATABASE_URL'))
 cur = connection.cursor()
 
-
-
-
 ## List of queries to create database, list append shit
 migrations =  [
     '''
@@ -26,8 +23,6 @@ migrations =  [
     )
     '''
 ]
-
-
 
 for n, query in enumerate(migrations):
     print("#### MIGRATION %s of %s ####" % (n, len(migrations)))

@@ -40,7 +40,6 @@ def login():
 
     return redirect(callback_url + token)
 
-
 @app.route("/logout")
 def logout():
     return redirect("http://login.kth.se/logout")
@@ -67,4 +66,3 @@ def verify(token):
         return  jsonify(user_info)
     else:
         abort(404)
-
