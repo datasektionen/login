@@ -7,10 +7,11 @@ from database import Database
 import kth_ldap
 import pls_api
 import os
+import secrets
 
 app = Flask(__name__)
 cas = CAS(app, '/cas')
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'SOMETHINGSUPERDUP33RSECREET')
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', secrets.token_hex(20))
 
 app.config['CAS_SERVER'] = os.environ.get('CAS_SERVER', 'https://login.kth.se')
 app.config['CAS_LOGIN_ROUTE'] = os.environ.get('CAS_LOGIN_ROUTE', '/p3/login')

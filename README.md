@@ -2,6 +2,13 @@
 
 Lives at `login2.datasektionen.se`. Uses [CAS](https://en.wikipedia.org/wiki/Central_Authentication_Service) to talk with https://login.kth.se. Fetches user info from KTH ldap at ldap.kth.se:389.
 
+## Environment variables to set for production:
+
+```
+SECRET_KEY # Used for flasks sessions. Should be securely random and very secret.
+DATABASE_URL # A postgresql database url. Example: postgres://postgres:password@db:5432/
+```
+
 ## Endpoints
 
 ### /hello
