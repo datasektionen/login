@@ -51,6 +51,8 @@ def verify(token):
         abort(400)
 
     db = Database()
+    # db.api_key_exists is the old way of verifying API keys.
+    # All new applications should instead use PLS API keys.
     if not (db.api_key_exists(api_key) or pls_api.verify(api_key)):
         abort(401)
 
