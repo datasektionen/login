@@ -1,12 +1,12 @@
 import psycopg2
 import os
-import random
+import secrets
 import hashlib
 
 # Does this location suck? :D Clean up this mess if you want to.
 def gen_hash(salt):
-    data = str(random.randint(0,100000000000)) + str(salt)
-    return hashlib.md5(data.encode('utf-8')).hexdigest()
+    data = secrets.token_bytes(20) + salt.encode("utf-8")
+    return hashlib.sha3_256(data).hexdigest()
 
 class Database:
     def __init__(self):
