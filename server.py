@@ -7,16 +7,16 @@ from database import Database
 import kth_ldap
 import pls_api
 import os
+import secrets
 
 app = Flask(__name__)
 cas = CAS(app, '/cas')
-#app.config['SERVER_NAME'] = 'login.datasektionen.se'
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'SOMETHINGSUPERDUP33RSECREET')
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', secrets.token_hex(20))
 
-app.config['CAS_SERVER'] = 'https://login.kth.se'
-app.config['CAS_LOGIN_ROUTE'] = '/p3/login'
-app.config['CAS_LOGOUT_ROUTE'] = '/p3/logout'
-app.config['CAS_VALIDATE_ROUTE'] = '/p3/serviceValidate'
+app.config['CAS_SERVER'] = os.environ.get('CAS_SERVER', 'https://login.kth.se')
+app.config['CAS_LOGIN_ROUTE'] = os.environ.get('CAS_LOGIN_ROUTE', '/p3/login')
+app.config['CAS_LOGOUT_ROUTE'] = os.environ.get('CAS_LOGOUT_ROUTE', '/p3/logout')
+app.config['CAS_VALIDATE_ROUTE'] = os.environ.get('CAS_VALIDATE_ROUTE', '/p3/serviceValidate')
 app.config['CAS_AFTER_LOGIN'] = 'index'
 app.debug = True
 
@@ -40,7 +40,6 @@ def login():
 
     return redirect(callback_url + token)
 
-
 @app.route("/logout")
 def logout():
     return redirect("http://login.kth.se/logout")
@@ -52,6 +51,8 @@ def verify(token):
         abort(400)
 
     db = Database()
+    # db.api_key_exists is the old way of verifying API keys.
+    # All new applications should instead use PLS API keys.
     if not (db.api_key_exists(api_key) or pls_api.verify(api_key)):
         abort(401)
 
@@ -67,4 +68,3 @@ def verify(token):
         return  jsonify(user_info)
     else:
         abort(404)
-

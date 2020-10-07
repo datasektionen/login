@@ -3,7 +3,6 @@ import os
 import random
 import hashlib
 
-
 # Does this location suck? :D Clean up this mess if you want to.
 def gen_hash(salt):
     data = str(random.randint(0,100000000000)) + str(salt)
@@ -68,9 +67,7 @@ class Database:
         self.update_time_created(token)
         return res[0]
 
-
     def api_key_exists(self, api_key):
-
         cur = self._connection.cursor()
         query = '''
         SELECT 1
@@ -84,7 +81,6 @@ class Database:
         cur.close()
 
         return not not res
-
 
     def new_token(self, kthid):
         cur = self._connection.cursor()

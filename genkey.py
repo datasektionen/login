@@ -2,9 +2,6 @@
 import sys
 from database import Database
 
-
-
-
 if __name__ == "__main__":
     if len(sys.argv) <= 1:
         print("Provide a name for the key")

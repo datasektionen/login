@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cas:serviceResponse xmlns:cas="http://www.yale.edu/tp/cas">
+  <cas:authenticationSuccess>
+    <cas:user>u1xxxxx</cas:user>
+    <cas:attributes>
+      <cas:uid>12345</cas:uid>
+      <cas:UDC_IDENTIFIER>987654321</cas:UDC_IDENTIFIER>
+    </cas:attributes>
+  </cas:authenticationSuccess>
+</cas:serviceResponse>
