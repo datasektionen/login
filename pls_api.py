@@ -1,7 +1,7 @@
 import requests
 import string
 
-API_KEY_ALPHABET = set(string.ascii_letters + string.digits + "-_=")
+API_KEY_ALPHABET = set(string.ascii_letters + string.digits + "-_")
 
 def valid_api_key(api_key):
     for c in api_key:
