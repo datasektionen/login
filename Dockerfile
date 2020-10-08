@@ -10,8 +10,8 @@ COPY Pipfile.lock .
 
 RUN pipenv install
 
-COPY *.py run.sh ./
 COPY mockldap ./mockldap
+COPY *.py run.sh ./
 
 # command in docker-compose.yml
 # CMD ["./run.sh"]
