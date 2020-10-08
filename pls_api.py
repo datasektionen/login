@@ -16,4 +16,4 @@ def verify(api_key):
         permissions = requests.get(f'https://pls.datasektionen.se/api/token/{api_key}/login/').json()
     except:
         return False
-    return isinstance(permissions, dict) and 'login' in permissions
+    return isinstance(permissions, list) and 'login' in permissions
