@@ -12,6 +12,7 @@ services:
       CAS_LOGOUT_ROUTE: /logout
       CAS_VALIDATE_ROUTE: /serviceValidate
       MOCK_LDAP: 1
+      DONT_VALIDATE_CALLBACK: 1
     command: ["./run.sh"]
   db: # https://hub.docker.com/_/postgres
     image: "postgres:latest"

@@ -8,6 +8,7 @@ import kth_ldap
 import pls_api
 import os
 import secrets
+import re
 
 app = Flask(__name__)
 cas = CAS(app, '/cas')
@@ -24,10 +25,15 @@ app.debug = True
 def hello():
     return "Hello Login!"
 
+def valid_callback(callback_url):
+    if os.environ.get('DONT_VALIDATE_CALLBACK', '0') != '0':
+        return True
+    return re.fullmatch("^https?://([a-zA-Z0-9]+[.])?datasektionen[.]se/.*$", callback_url) is not None
+
 @app.route("/login")
 def login():
     callback_url = request.args.get('callback')
-    if not callback_url:
+    if not callback_url or not valid_callback(callback_url):
         return abort(400)
     if 'CAS_USERNAME' not in flask.session:
         flask.session['CAS_AFTER_LOGIN_SESSION_URL'] = flask.request.url
