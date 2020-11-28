@@ -91,3 +91,10 @@ class Database:
                 api_key = gen_api_key(prefix)
                 cur.execute(query, (api_key,))
         return api_key
+
+    def delete_tokens(self, kthid):
+        with self._connection.cursor() as cur:
+            cur.execute('''
+                DELETE FROM tokens
+                WHERE kthid = %s
+            ''', (kthid,))
