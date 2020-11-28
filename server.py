@@ -1,6 +1,8 @@
 import flask
 from flask import Flask, request, redirect, abort, url_for, session, jsonify
 from flask_cas import CAS
+from flask_cas import login as cas_login
+from flask_cas import logout as cas_logout
 from urllib.parse import urlencode
 
 from database import Database
@@ -37,20 +39,26 @@ def login():
         return abort(400)
     if 'CAS_USERNAME' not in flask.session:
         flask.session['CAS_AFTER_LOGIN_SESSION_URL'] = flask.request.url
-        return redirect(flask.url_for('cas.login', _external=True))
+        return cas_login()
     kthid = cas.username
     db = Database()
     token = db.token_by_kthid(kthid)
     if token:
         db.update_time_created(token)
     else:
+        db.delete_tokens(kthid)
         token = db.new_token(kthid)
 
     return redirect(callback_url + token)
 
 @app.route("/logout")
 def logout():
-    return redirect("http://login.kth.se/logout")
+    if 'CAS_USERNAME' not in flask.session:
+        abort(400)
+    kthid = cas.username
+    db = Database()
+    db.delete_tokens(kthid)
+    return cas_logout()
 
 @app.route("/verify/<string:token>")
 def verify(token):
