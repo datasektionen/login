@@ -41,7 +41,9 @@ def login():
     kthid = cas.username
     db = Database()
     token = db.token_by_kthid(kthid)
-    if not token:
+    if token:
+        db.update_time_created(token)
+    else:
         token = db.new_token(kthid)
 
     return redirect(callback_url + token)
