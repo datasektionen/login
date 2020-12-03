@@ -13,5 +13,4 @@ RUN pipenv install
 COPY mockldap ./mockldap
 COPY *.py run.sh ./
 
-# command in docker-compose.yml
-# CMD ["./run.sh"]
+CMD ["./run.sh"]
