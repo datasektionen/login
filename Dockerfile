@@ -11,6 +11,6 @@ COPY Pipfile.lock .
 RUN pipenv install
 
 COPY mockldap ./mockldap
-COPY *.py run.sh ./
+COPY *.py run.sh CHECKS ./
 
 CMD ["./run.sh"]
