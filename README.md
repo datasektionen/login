@@ -85,4 +85,4 @@ Build the Dockerfile, run the container. The environment variable `DATABASE_URL`
 
 ## Dependency on other systems at Datasektionen
 
-Login uses [Pls](https://pls.datasektionen.se) to validate API keys. The API keys must have the "login" permission.
+Login uses [Pls](https://pls.datasektionen.se) to validate API keys. The API keys must have the "login" permission in the "login" system.
