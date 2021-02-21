@@ -1,5 +1,5 @@
 # https://hub.docker.com/_/python
-FROM python:3.7
+FROM python:3.8
 
 WORKDIR /usr/src/app
 
