@@ -33,10 +33,12 @@ def valid_callback(callback_url):
     return re.fullmatch("^https?://([a-zA-Z0-9]+[.])*datasektionen[.]se(:[1-9][0-9]*)?/.*$", callback_url) is not None
 
 def upgrade_to_https(url):
-    if re.match("https", url):
+    if url.startwith("https://"):
         return url
-    return re.sub("^http", "https", url, 1)
-
+    if not url.startswith("http://"):
+        raise ValueError("Invalid url")
+    return "https" + url[4:]
+    
 @app.route("/login")
 def login():
     callback_url = request.args.get('callback')
