@@ -32,13 +32,23 @@ def valid_callback(callback_url):
         return True
     return re.fullmatch("^https?://([a-zA-Z0-9]+[.])*datasektionen[.]se(:[1-9][0-9]*)?/.*$", callback_url) is not None
 
+def upgrade_to_https(url):
+    if url.startswith("https://"):
+        return url
+    if not url.startswith("http://"):
+        raise ValueError("Invalid url")
+    return "https" + url[4:]
+    
 @app.route("/login")
 def login():
     callback_url = request.args.get('callback')
     if not callback_url or not valid_callback(callback_url):
         return abort(400)
     if 'CAS_USERNAME' not in flask.session:
-        flask.session['CAS_AFTER_LOGIN_SESSION_URL'] = flask.request.url
+        try:
+            flask.session['CAS_AFTER_LOGIN_SESSION_URL'] = upgrade_to_https(flask.request.url)
+        catch ValueError:
+            return abort(400)
         return cas_login()
     kthid = cas.username
     db = Database()
