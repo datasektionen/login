@@ -45,7 +45,10 @@ def login():
     if not callback_url or not valid_callback(callback_url):
         return abort(400)
     if 'CAS_USERNAME' not in flask.session:
-        flask.session['CAS_AFTER_LOGIN_SESSION_URL'] = upgrade_to_https(flask.request.url)
+        try:
+            flask.session['CAS_AFTER_LOGIN_SESSION_URL'] = upgrade_to_https(flask.request.url)
+        catch ValueError:
+            return abort(400)
         return cas_login()
     kthid = cas.username
     db = Database()
