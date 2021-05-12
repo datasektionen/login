@@ -33,7 +33,7 @@ def valid_callback(callback_url):
     return re.fullmatch("^https?://([a-zA-Z0-9]+[.])*datasektionen[.]se(:[1-9][0-9]*)?/.*$", callback_url) is not None
 
 def upgrade_to_https(url):
-    if url.startwith("https://"):
+    if url.startswith("https://"):
         return url
     if not url.startswith("http://"):
         raise ValueError("Invalid url")
