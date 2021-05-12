@@ -47,7 +47,7 @@ def login():
     if 'CAS_USERNAME' not in flask.session:
         try:
             flask.session['CAS_AFTER_LOGIN_SESSION_URL'] = upgrade_to_https(flask.request.url)
-        catch ValueError:
+        except ValueError:
             return abort(400)
         return cas_login()
     kthid = cas.username
