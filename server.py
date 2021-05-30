@@ -31,7 +31,7 @@ def valid_callback(callback_url):
         return True
     return re.fullmatch("^https?://([a-zA-Z0-9]+[.])*datasektionen[.]se(:[1-9][0-9]*)?/.*$", callback_url) is not None
 
-@app.route("/login/oidc")
+@app.route("/login")
 def login():
     callback_url = request.args.get('callback')
     if not callback_url or not valid_callback(callback_url):
