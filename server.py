@@ -11,13 +11,14 @@ import re
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(32)
-app.config["GOOGLE_CLIENT_ID"] = os.environ["CLIENT_ID"]
-app.config["GOOGLE_CLIENT_SECRET"] = os.environ["CLIENT_SECRET"]
+
+app.config["KTH_CLIENT_ID"] = os.environ["CLIENT_ID"]
+app.config["KTH_CLIENT_SECRET"] = os.environ["CLIENT_SECRET"]
 
 oauth = OAuth(app)
-oauth.register('google',     
-    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
-    client_kwargs={'scope': 'openid profile email'})
+oauth.register('kth',     
+    server_metadata_url='https://login.ug.kth.se/adfs/.well-known/openid-configuration',
+    client_kwargs={'scope': 'openid'})
 
 LOGOUT_REDIRECT_URL = "https://datasektionen.se"
 
@@ -30,7 +31,7 @@ def valid_callback(callback_url):
         return True
     return re.fullmatch("^https?://([a-zA-Z0-9]+[.])*datasektionen[.]se(:[1-9][0-9]*)?/.*$", callback_url) is not None
 
-@app.route("/login")
+@app.route("/login/oidc")
 def login():
     callback_url = request.args.get('callback')
     if not callback_url or not valid_callback(callback_url):
@@ -39,16 +40,16 @@ def login():
     
     redirect_uri = url_for('callback', _external=True)
     redirect_uri = "https" + redirect_uri[4:]
-    return oauth.google.authorize_redirect(redirect_uri)
+    return oauth.kth.authorize_redirect(redirect_uri)
 
-@app.route("/oidc/google/callback")
+@app.route("/oidc/kth/callback")
 def callback():
     try:
-        token = oauth.google.authorize_access_token()
+        token = oauth.kth.authorize_access_token()
     except Exception as e:
         print("error:", e)
         return abort(400)
-    user_info = oauth.google.parse_id_token(token)
+    user_info = oauth.kth.parse_id_token(token)
     kthid = user_info.email
 
     callback = session["DATA_CALLBACK"]
