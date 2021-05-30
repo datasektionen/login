@@ -43,7 +43,10 @@ def login():
     callback_url = request.args.get('callback')
     if not callback_url or not valid_callback(callback_url):
         return abort(400)
-    session["DATA_CALLBACK"] = callback_url
+    try:
+        session["DATA_CALLBACK"] = upgrade_to_https(callback_url)
+    except ValueError:
+        return abort(400)
     
     redirect_uri = url_for('callback', _external=True)
     redirect_uri = "https" + redirect_uri[4:]
