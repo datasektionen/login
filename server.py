@@ -31,6 +31,13 @@ def valid_callback(callback_url):
         return True
     return re.fullmatch("^https?://([a-zA-Z0-9]+[.])*datasektionen[.]se(:[1-9][0-9]*)?/.*$", callback_url) is not None
 
+def upgrade_to_https(url):
+    if url.startswith("https://"):
+        return url
+    if not url.startswith("http://"):
+        raise ValueError("Invalid url")
+    return "https" + url[4:]
+    
 @app.route("/login")
 def login():
     callback_url = request.args.get('callback')
@@ -55,7 +62,6 @@ def callback():
     callback = session["DATA_CALLBACK"]
     if not callback or not valid_callback(callback):
        return abort(400)
-
     db = Database()
     data_token = db.token_by_kthid(kthid)
     if data_token:
