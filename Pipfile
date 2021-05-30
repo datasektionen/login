@@ -12,6 +12,7 @@ requests = "*"
 gunicorn = "*"
 Flask = "==1.0.2"
 Flask-CAS = "==1.0.0"
+authlib = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"

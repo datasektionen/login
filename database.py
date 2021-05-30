@@ -98,3 +98,10 @@ class Database:
                 DELETE FROM tokens
                 WHERE kthid = %s
             ''', (kthid,))
+
+    def delete_token(self, token):
+        with self._connection.cursor() as cur:
+            cur.execute('''
+                DELETE FROM tokens
+                WHERE token = %s
+            ''', (token,))
