@@ -18,7 +18,7 @@ app.config["KTH_CLIENT_SECRET"] = os.environ["CLIENT_SECRET"]
 oauth = OAuth(app)
 oauth.register('kth',     
     server_metadata_url='https://login.ug.kth.se/adfs/.well-known/openid-configuration',
-    client_kwargs={'scope': 'openid'})
+    client_kwargs={'scope': 'openid profile email'})
 
 LOGOUT_REDIRECT_URL = "https://datasektionen.se"
 
