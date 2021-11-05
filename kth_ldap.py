@@ -12,11 +12,11 @@ def get_connection():
                 server = Server('ldap.kth.se', port=389, get_info=ALL)
                 return Connection(server, auto_bind=False)
 
-def get_user_info(mail):
+def get_user_info(email):
         conn = get_connection()
         conn.bind()
         search_params = { 'search_base': 'ou=Addressbook,dc=kth,dc=se',
-                          'search_filter': '(mail=%s)' % mail,
+                          'search_filter': '(mail=%s)' % email,
                           'attributes': ['givenname', 'sn', 'ugusername', 'mail', 'ugkthid'],
                           'paged_size': 1 }
         conn.search(**search_params)
