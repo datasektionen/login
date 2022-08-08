@@ -56,6 +56,8 @@ def login():
 def callback():
     try:
         token = oauth.kth.authorize_access_token()
+        print(token)
+        print("reeee")
     except Exception as e:
         print("error:", e)
         return abort(400)
@@ -114,6 +116,7 @@ def verify(token):
         abort(404)
     db.update_time_created(token)
     user_info = kth_ldap.get_user_info(kthid)
+    # user_info = 
     if user_info:
         return  jsonify(user_info)
     else:
