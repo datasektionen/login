@@ -2,6 +2,11 @@
 
 Lives at `login.datasektionen.se`. Uses [CAS](https://en.wikipedia.org/wiki/Central_Authentication_Service) to talk with https://login.kth.se. Fetches user info from KTH ldap at ldap.kth.se:389.
 
+## Local setup for development of other services
+The easiest way to get login running locally for development on another system
+is to not use login but instead,
+[nyckeln-under-dörrmattan](https://github.com/datasektionen/nyckeln-under-dorrmattan).
+
 ## Environment variables:
 
 All defaults are sane for production. The only thing that needs to be set in production is `DATABASE_URL`.
