@@ -29,7 +29,7 @@ def hello():
 def valid_callback(callback_url):
     if os.environ.get('DONT_VALIDATE_CALLBACK', '0') != '0':
         return True
-    return re.fullmatch("^https?://(([a-zA-Z0-9\-]+[.])*((datasektionen)|(dsekt)|(d-?dagen)|([bm]etaspexet))[.]se|localhost|127\.0\.0\.1)(:[1-9][0-9]*)?/.*$", callback_url) is not None
+    return re.fullmatch("^https?://(([a-zA-Z0-9\-]+[.])*((datasektionen)|(dsekt)|(d-?dagen)|([bm]etaspexet)|(betasektionen))[.]se|localhost|127\.0\.0\.1)(:[1-9][0-9]*)?/.*$", callback_url) is not None
 
 def upgrade_to_https(url):
     if url.startswith("https://"):
