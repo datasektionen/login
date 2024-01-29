@@ -1,6 +1,8 @@
 from flask import Flask, request, redirect, abort, url_for, session, jsonify
 from urllib.parse import urlencode
 from authlib.integrations.flask_client import OAuth
+from flask import jsonify
+
 
 from database import Database
 import kth_ldap
@@ -44,11 +46,11 @@ def upgrade_to_https(url):
 def login():
     callback_url = request.args.get('callback')
     if not callback_url or not valid_callback(callback_url):
-        return abort(400)
+        return jsonify(message="Invalid callback URL"), 400
     try:
         session["DATA_CALLBACK"] = upgrade_to_https(callback_url)
     except ValueError:
-        return abort(400)
+        return jsonify(message="An error occured"), 400
     
     redirect_uri = url_for('callback', _external=True)
     redirect_uri = "https" + redirect_uri[4:]
